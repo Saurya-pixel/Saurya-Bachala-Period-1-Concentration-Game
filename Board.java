@@ -25,8 +25,12 @@ public class Board
    */
   public Board()
   {
-   
-    /* your code here */ 
+   for(int r = 0; r < gameboard.length; r++){
+    for(int c = 0; c < gameboard[0].length; c++){
+      gameboard[r][c] = new Tile(tileValues[(int)(Math.random()* tileValues.length)]);
+    }
+   }
+
 
   }
 
@@ -41,10 +45,20 @@ public class Board
    */
   public String toString()
   {
+    String elements = "";
+    for(Tile[] r : gameboard){
+      elements += "\n";
+      for(Tile c : r){
+        if(c.isShowingValue() == true){
+          elements += c.getValue() + "\t";
+        }
+        else{
+          elements += c.getHidden() + "\t";
+        }
+      }
+    }
+    return elements;
  
-    /* your code here */
- 
-    return "";
   }
 
   /** 
@@ -59,6 +73,14 @@ public class Board
   {
 
     /* your code  here */
+    for(int r = 0; r < gameboard.length; r++){
+      for(int c = 0; c < gameboard[0].length; c++){
+        if( gameboard[r][c].matched() == false ){
+          return false;
+        }
+      }
+
+    }
     
     return true;
   }
@@ -78,6 +100,7 @@ public class Board
   {
    
     /* your code here */
+    gameboard[row][column].show();
   }  
 
   /** 
@@ -102,6 +125,16 @@ public class Board
     String msg = "";
 
      /* your code here */
+     if(gameboard[row1][col1].equals(gameboard[row2][col2])){
+        msg += "The Tiles Match!";
+        gameboard[row1][col1].foundMatch();
+        gameboard[row2][col2].foundMatch();
+     }
+     else{
+        msg += "The Tiles Do Not Match";
+        gameboard[row1][col1].hide();
+        gameboard[row2][col2].hide();
+     }
     
      return msg;
   }
@@ -118,8 +151,12 @@ public class Board
   {
 
     /* your code here */
+    if(row < gameboard.length && col < gameboard[0].length && gameboard[row][col].matched() == false){
+      return true;
+    }
 
-    return true;
+    return false;
+
   }
 
 }
